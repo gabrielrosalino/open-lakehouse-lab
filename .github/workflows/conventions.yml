@@ -1,0 +1,90 @@
+---
+name: Conventions
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  validate-pr-title:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate title format and issue reference
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+
+          echo "PR title: ${PR_TITLE}"
+
+          conventional_pr_regex='^(feat|fix|chore|docs|ci|test|refactor|build|perf|style|revert)(\([a-z0-9._-]+\))?!?: .+ \(#[0-9]+\)$'
+
+          if [[ ! "${PR_TITLE}" =~ ${conventional_pr_regex} ]]; then
+            echo "Invalid PR title."
+            echo "Expected: <type>(optional-scope): <summary> (#<issue-number>)"
+            echo "Example: feat(k8s): add kind cluster bootstrap (#4)"
+            exit 1
+          fi
+
+  validate-commit-messages:
+    name: Validate commit messages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout pull request
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate Conventional Commits
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          conventional_commit_regex='^(feat|fix|chore|docs|ci|test|refactor|build|perf|style|revert)(\([a-z0-9._-]+\))?!?: .+'
+
+          echo "Validating commits between ${BASE_SHA} and ${HEAD_SHA}"
+
+          invalid_commits=0
+
+          while IFS= read -r line; do
+            commit_sha="${line%% *}"
+            commit_subject="${line#* }"
+
+            echo "Checking ${commit_sha}: ${commit_subject}"
+
+            if [[ "${commit_subject}" =~ ^Merge\  ]]; then
+              echo "Skipping merge commit."
+              continue
+            fi
+
+            if [[ "${commit_subject}" =~ ^Revert\  ]]; then
+              echo "Skipping Git revert commit."
+              continue
+            fi
+
+            if [[ ! "${commit_subject}" =~ ${conventional_commit_regex} ]]; then
+              echo "Invalid commit message: ${commit_subject}"
+              invalid_commits=$((invalid_commits + 1))
+            fi
+          done < <(git log --format='%H %s' "${BASE_SHA}..${HEAD_SHA}")
+
+          if [[ "${invalid_commits}" -gt 0 ]]; then
+            echo "Found ${invalid_commits} invalid commit message(s)."
+            echo "Expected: <type>(optional-scope): <summary>"
+            echo "Example: feat(k8s): add kind cluster configuration"
+            exit 1
+          fi
