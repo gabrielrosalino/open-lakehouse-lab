@@ -5,6 +5,14 @@ EXISTING_PYTHON_DIRS := $(wildcard $(PYTHON_DIRS))
 K8S_DIR := k8s
 KIND_CONFIG := $(K8S_DIR)/kind/kind-config.yaml
 K8S_NAMESPACE_MANIFEST := $(K8S_DIR)/namespaces/data-platform.yaml
+K8S_MANIFEST_DIRS := \
+	$(K8S_DIR)/namespaces \
+	$(K8S_DIR)/minio \
+	$(K8S_DIR)/polaris \
+	$(K8S_DIR)/airflow \
+	$(K8S_DIR)/monitoring \
+	$(K8S_DIR)/rbac
+EXISTING_K8S_MANIFEST_DIRS := $(wildcard $(K8S_MANIFEST_DIRS))
 KIND_CLUSTER_NAME ?= open-lakehouse-lab
 KUBECTL_CONTEXT ?= kind-$(KIND_CLUSTER_NAME)
 DOCKER_DIR := docker
@@ -99,14 +107,14 @@ dbt-test:
 	fi
 
 validate-k8s:
-	@if [ -d $(K8S_DIR) ]; then \
+	@if [ -n "$(EXISTING_K8S_MANIFEST_DIRS)" ]; then \
 		if command -v kubeconform >/dev/null 2>&1; then \
-			kubeconform -summary -strict $(K8S_DIR); \
+			kubeconform -summary -strict $(EXISTING_K8S_MANIFEST_DIRS); \
 		else \
 			echo "kubeconform not installed. Skipping Kubernetes validation."; \
 		fi; \
 	else \
-		echo "No k8s directory found. Skipping Kubernetes validation."; \
+		echo "No Kubernetes manifest directories found. Skipping Kubernetes validation."; \
 	fi
 
 lint-docker:
