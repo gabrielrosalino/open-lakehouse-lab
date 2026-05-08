@@ -1,0 +1,46 @@
+---
+default_install_hook_types:
+  - pre-commit
+  - pre-push
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+
+  - repo: local
+    hooks:
+      - id: lint-python
+        name: lint-python
+        entry: make lint-python
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: lint-yaml
+        name: lint-yaml
+        entry: make lint-yaml
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: docs-check
+        name: docs-check
+        entry: make docs-check
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: pre-push-ci
+        name: pre-push-ci
+        entry: make pre-push
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
