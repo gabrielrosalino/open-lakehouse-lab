@@ -46,6 +46,79 @@ Some directories may not exist yet. Create them only when the task requires it.
 - Do not commit secrets, tokens, local credentials, kubeconfigs or generated private files.
 - Use public APIs or deterministic fixtures. Do not use private datasets.
 
+## Commit conventions
+
+Use Conventional Commits for every commit that is part of a Pull Request.
+
+Required format:
+
+```text
+<type>(optional-scope): <short imperative summary>
+```
+
+Allowed types:
+
+```text
+feat      new user-facing or project capability
+fix       bug fix
+chore     repository maintenance, tooling or non-runtime work
+docs      documentation-only change
+ci        GitHub Actions, pre-commit, quality gates or automation
+test      tests or fixtures
+refactor  code restructuring without behavior change
+build     Docker, dependency or build-system changes
+perf      performance improvement
+style     formatting-only change
+revert    revert commit
+```
+
+Examples:
+
+```text
+feat(k8s): add kind cluster configuration
+fix(dbt): correct Polaris catalog attach macro
+docs(adr): document MinIO storage decision
+ci(github): validate PR title and commit messages
+chore(codex): add repository agent skills
+```
+
+Rules:
+
+- Use lowercase `type` and optional lowercase `scope`.
+- Keep the first line concise and descriptive.
+- Prefer imperative mood, for example `add`, `create`, `fix`, `document`.
+- Do not use vague messages like `update`, `changes`, `fix stuff` or `wip`.
+- Merge commits, revert commits and automated dependency commits may be handled separately by repository automation.
+
+## Pull request conventions
+
+Every Pull Request must be linked to a GitHub issue in the PR title using an issue reference.
+
+Required title pattern:
+
+```text
+<type>(optional-scope): <short summary> (#<issue-number>)
+```
+
+Accepted examples:
+
+```text
+feat(k8s): add kind cluster bootstrap (#4)
+docs(codex): add agent instructions and skills (#2)
+ci(github): add convention validation workflow (#2)
+```
+
+The `#<issue-number>` reference is required in the title because GitHub automatically links it to the related issue.
+
+Every PR body should include:
+
+- linked issue using `Closes #<issue>` or `Refs #<issue>`;
+- concise summary of what changed;
+- commands executed for validation;
+- known limitations or follow-up tasks.
+
+PRs should be small and stage-oriented. A PR should normally target one issue or one clearly bounded part of a stage.
+
 ## Architecture constraints
 
 - MinIO is the object storage abstraction.
@@ -91,7 +164,8 @@ pre-commit install --hook-type pre-push
 
 Every PR should include:
 
-- linked issue using `Closes #<issue>` or `Refs #<issue>`;
+- title containing a GitHub issue reference, such as `(#2)`;
+- linked issue in the body using `Closes #<issue>` or `Refs #<issue>`;
 - concise summary of what changed;
 - commands executed for validation;
 - known limitations or follow-up tasks.
