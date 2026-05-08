@@ -71,9 +71,14 @@ spec:
             capabilities:
               drop:
                 - ALL
+            readOnlyRootFilesystem: true
           volumeMounts:
             - name: minio-data
               mountPath: /data
+            - name: tmp
+              mountPath: /tmp
       volumes:
         - name: minio-data
+          emptyDir: {}
+        - name: tmp
           emptyDir: {}
