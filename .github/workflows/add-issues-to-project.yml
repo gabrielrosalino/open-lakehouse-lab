@@ -1,0 +1,24 @@
+name: Add issues to GitHub Project
+
+on:
+  issues:
+    types:
+      - opened
+      - reopened
+      - transferred
+
+permissions:
+  contents: read
+  issues: read
+
+jobs:
+  add-issue-to-project:
+    name: Add issue to project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Add issue to GitHub Project
+        uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: ${{ vars.GH_PROJECT_URL }}
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
