@@ -17,6 +17,13 @@ repos:
 
   - repo: local
     hooks:
+      - id: check-requirements
+        name: check-requirements
+        entry: make check-requirements
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
       - id: lint-python
         name: lint-python
         entry: make lint-python

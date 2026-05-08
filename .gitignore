@@ -1,0 +1,88 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+.pyre/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Python environments and local packaging
+.venv/
+venv/
+env/
+ENV/
+pip-wheel-metadata/
+build/
+dist/
+*.egg-info/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+credentials/
+
+# Local data, databases, and lakehouse scratch space
+data/
+tmp/
+temp/
+scratch/
+warehouse/
+lakehouse/
+minio-data/
+*.db
+*.duckdb
+*.duckdb.wal
+*.sqlite
+*.sqlite3
+*.parquet
+*.orc
+*.avro
+
+# dbt generated artifacts
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+dbt/.user.yml
+logs/dbt.log
+
+# Airflow local runtime artifacts
+airflow/logs/
+airflow/plugins/__pycache__/
+airflow/airflow.db
+airflow/airflow.cfg
+airflow/webserver_config.py
+airflow/unittests.cfg
+
+# Kubernetes and local cluster state
+.kube/
+kubeconfig*
+kind-kubeconfig*
+*.kubeconfig
+
+# Docker and compose local overrides
+docker-compose.override.yml
+compose.override.yml
+
+# Tooling and editor metadata
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/

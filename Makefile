@@ -1,17 +1,19 @@
-.PHONY: help install-dev lint-python test-python lint-yaml lint-dbt dbt-parse dbt-compile dbt-test validate-k8s lint-docker security-scan docs-check docker-build ci-pr pre-push
+.PHONY: help install-dev check-requirements lint-python test-python lint-yaml lint-dbt dbt-parse dbt-compile dbt-test validate-k8s lint-docker security-scan docs-check docker-build ci-pr pre-push
 
-PYTHON_DIRS := ingestion airflow transformations tests
+PYTHON_DIRS := ingestion airflow transformations tests scripts
 EXISTING_PYTHON_DIRS := $(wildcard $(PYTHON_DIRS))
 K8S_DIR := k8s
 DOCKER_DIR := docker
 DBT_DIR := dbt
 DOCS_DIR := docs
+PYTHON ?= python3
 
 help:
 	@echo "Open Lakehouse Lab quality commands"
 	@echo "  make install-dev       Install local development dependencies"
 	@echo "  make ci-pr             Run the same checks used by GitHub Actions"
 	@echo "  make pre-push          Run checks before pushing"
+	@echo "  make check-requirements Validate requirements files against pyproject.toml"
 	@echo "  make lint-python       Run Ruff lint"
 	@echo "  make test-python       Run pytest when tests exist"
 	@echo "  make lint-yaml         Run yamllint"
@@ -23,8 +25,11 @@ help:
 	@echo "  make security-scan     Run Bandit and optional Trivy checks"
 
 install-dev:
-	python -m pip install --upgrade pip
+	$(PYTHON) -m pip install --upgrade pip
 	pip install -r requirements-dev.txt
+
+check-requirements:
+	$(PYTHON) scripts/check_requirements_sync.py
 
 lint-python:
 	@if [ -n "$(EXISTING_PYTHON_DIRS)" ]; then \
@@ -122,6 +127,6 @@ docker-build:
 		echo "No Dockerfiles found. Skipping Docker build."; \
 	fi
 
-ci-pr: lint-python test-python lint-yaml lint-dbt dbt-parse dbt-compile validate-k8s lint-docker security-scan docs-check
+ci-pr: check-requirements lint-python test-python lint-yaml lint-dbt dbt-parse dbt-compile validate-k8s lint-docker security-scan docs-check
 
 pre-push: ci-pr
