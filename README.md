@@ -37,6 +37,13 @@ Stage 03 deploys MinIO in the local Kubernetes cluster and initializes the
 `lakehouse` bucket. See `docs/runbooks/minio-object-storage.md` for deployment,
 port-forward and path conventions.
 
+## Local Iceberg REST Catalog
+
+Stage 04 deploys Apache Polaris as the local Iceberg REST Catalog and bootstraps
+the `lakehouse` catalog backed by the MinIO warehouse path.
+See `docs/runbooks/polaris-rest-catalog.md` for credentials, deployment,
+health checks and endpoint conventions.
+
 ## Development quality checks
 
 Install development dependencies:
