@@ -6,6 +6,8 @@ open_lakehouse_lab:
       type: duckdb
       path: "{{ env_var('DBT_DUCKDB_PATH', 'target/open_lakehouse_lab.duckdb') }}"
       threads: "{{ env_var('DBT_THREADS', '4') | int }}"
+      config_options:
+        extension_directory: "{{ env_var('DBT_DUCKDB_EXTENSION_DIRECTORY', 'target/duckdb_extensions') }}"
       extensions:
         - httpfs
         - parquet
