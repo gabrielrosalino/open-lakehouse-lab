@@ -7,7 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 RUN useradd --create-home --shell /usr/sbin/nologin dbt \
-    && python -m pip install --no-cache-dir --upgrade pip \
+    && python -m pip install --no-cache-dir --upgrade pip==26.1.1 \
     && python -m pip install --no-cache-dir \
         dbt-core==1.10.15 \
         dbt-duckdb==1.9.6 \
