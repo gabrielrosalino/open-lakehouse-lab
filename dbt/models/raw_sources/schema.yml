@@ -1,0 +1,47 @@
+---
+version: 2
+
+models:
+  - name: generic_raw_contract
+    description: Generic Raw contract used by dbt before concrete source adapters are implemented.
+    columns:
+      - name: source
+        description: Logical source adapter name.
+        tests:
+          - not_null
+      - name: dataset
+        description: Logical dataset produced by the source adapter.
+        tests:
+          - not_null
+      - name: ingestion_date
+        description: Date partition associated with the Raw landing event.
+        tests:
+          - not_null
+      - name: loaded_at
+        description: Timestamp when the payload was loaded into the Raw contract.
+        tests:
+          - not_null
+      - name: payload
+        description: Original payload serialized as JSON text.
+        tests:
+          - not_null
+
+seeds:
+  - name: raw_source_events
+    description: Local fixture that validates the generic Raw contract without external ingestion.
+    columns:
+      - name: source
+        tests:
+          - not_null
+      - name: dataset
+        tests:
+          - not_null
+      - name: ingestion_date
+        tests:
+          - not_null
+      - name: loaded_at
+        tests:
+          - not_null
+      - name: payload
+        tests:
+          - not_null

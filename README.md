@@ -66,6 +66,13 @@ Stage 05 deploys Airflow with the Apache Airflow Helm chart and validates
 See `docs/runbooks/airflow-kubernetes-pod-operator.md` for image build, deploy,
 UI access and smoke DAG validation steps.
 
+## dbt + DuckDB foundation
+
+Stage 08 configures dbt with DuckDB and prepares integration points for Apache
+Polaris and Apache Iceberg without depending on public API ingestion. See
+`docs/runbooks/dbt-duckdb-polaris.md` for the generic Raw contract, dbt commands,
+Docker runtime and known limitations.
+
 ## Development quality checks
 
 Install development dependencies:

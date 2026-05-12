@@ -1,0 +1,52 @@
+# Git and local metadata
+.git/
+.github/
+.DS_Store
+
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+secrets/
+credentials/
+*.pem
+*.key
+*.crt
+
+# Local runtime data
+data/
+tmp/
+temp/
+scratch/
+warehouse/
+lakehouse/
+minio-data/
+*.db
+*.duckdb
+*.duckdb.wal
+*.sqlite
+*.sqlite3
+
+# Generated dbt and Airflow artifacts
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+dbt/.user.yml
+airflow/logs/
+airflow/.astro/
+airflow/airflow.db
+airflow/airflow.cfg
+
+# Logs
+logs/
+*.log
