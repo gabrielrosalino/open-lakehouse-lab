@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open Lakehouse Lab - Documento</title>
+    <link rel="stylesheet" href="../assets/site.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <div class="doc-top">
+        <a class="crumb" href="../index.html">Voltar para a pagina inicial</a>
+        <article class="doc-hero">
+          <span class="doc-category" id="doc-category">Documento</span>
+          <h1 id="doc-title">Carregando...</h1>
+          <p class="lead" id="doc-summary"></p>
+          <div class="tags" id="doc-tags"></div>
+        </article>
+      </div>
+
+      <div class="doc-grid">
+        <div class="doc-main" id="doc-sections"></div>
+        <aside class="doc-aside">
+          <div class="side-panel">
+            <h2>Nesta pagina</h2>
+            <div id="doc-toc"></div>
+            <h2 style="margin-top: 18px">Comandos</h2>
+            <div id="doc-commands"></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <script src="../assets/docs-data.js"></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const key = params.get("doc") || "overview";
+      const docs = window.OPEN_LAKEHOUSE_DOCS || {};
+      const doc = docs[key] || docs.overview;
+      const escapeHtml = (value) =>
+        String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+
+      document.title = `Open Lakehouse Lab - ${doc.title}`;
+      document.getElementById("doc-category").textContent = doc.category;
+      document.getElementById("doc-title").textContent = doc.title;
+      document.getElementById("doc-summary").textContent = doc.summary;
+
+      const tags = document.getElementById("doc-tags");
+      tags.innerHTML = (doc.tags || [])
+        .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
+        .join("");
+
+      const sections = document.getElementById("doc-sections");
+      const toc = document.getElementById("doc-toc");
+      sections.innerHTML = (doc.sections || [])
+        .map((section, index) => {
+          const id = `sec-${index + 1}`;
+          return `<section class="doc-section" id="${id}"><h2>${escapeHtml(section.title)}</h2><p>${escapeHtml(section.body)}</p></section>`;
+        })
+        .join("");
+      toc.innerHTML = (doc.sections || [])
+        .map((section, index) => `<a href="#sec-${index + 1}">${escapeHtml(section.title)}</a>`)
+        .join("");
+
+      const commands = document.getElementById("doc-commands");
+      commands.innerHTML = (doc.commands || [])
+        .map(
+          (command) =>
+            `<pre><button class="copy" type="button">copiar</button><code>${escapeHtml(command)}</code></pre>`,
+        )
+        .join("");
+    </script>
+    <script src="../assets/site.js"></script>
+  </body>
+</html>

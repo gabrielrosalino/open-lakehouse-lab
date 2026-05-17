@@ -531,6 +531,7 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="assets/site.css" />
   </head>
   <body>
     <div class="layout">
@@ -544,6 +545,7 @@
             <h2>Comeco</h2>
             <a href="#visao-geral">Visao geral</a>
             <a href="#arquitetura">Arquitetura</a>
+            <a href="#estrutura">Estrutura do projeto</a>
             <a href="#caminho-rapido">Caminho Rapido</a>
             <a href="#trilha">Trilha de Aprendizado</a>
           </div>
@@ -581,6 +583,28 @@
               <a class="button secondary" href="#trilha">Seguir licoes</a>
               <a class="button secondary" href="#customizacao">Criar pipeline proprio</a>
             </div>
+            <div class="mission-board" aria-label="Missoes de aprendizado">
+              <div class="mission">
+                <span class="mission-code">M1</span>
+                <b>Subir a plataforma</b>
+                <span>kind, MinIO, Polaris e Airflow rodando localmente.</span>
+              </div>
+              <div class="mission">
+                <span class="mission-code">M2</span>
+                <b>Publicar dados Raw</b>
+                <span>Fixture Parquet gravada no bucket lakehouse.</span>
+              </div>
+              <div class="mission">
+                <span class="mission-code">M3</span>
+                <b>Transformar com dbt</b>
+                <span>DuckDB processando Raw, Silver e Gold.</span>
+              </div>
+              <div class="mission">
+                <span class="mission-code">M4</span>
+                <b>Orquestrar no Airflow</b>
+                <span>DAGs criando pods efemeros no cluster kind.</span>
+              </div>
+            </div>
           </header>
 
           <section id="arquitetura">
@@ -614,6 +638,55 @@
                 <div><b>Modular</b><br /><span>Core desacoplado das fontes reais.</span></div>
               </div>
             </div>
+          </section>
+
+          <section id="estrutura">
+            <h2>Estrutura do projeto</h2>
+            <p>
+              Cada diretorio representa uma parte do laboratorio. A ideia e que voce
+              consiga navegar pelo codigo como se fosse um mapa da plataforma.
+            </p>
+            <div class="project-map">
+              <div class="dir-card">
+                <code>airflow/</code>
+                <p>Projeto Airflow criado com Astro CLI, DAGs principais e DAGs didaticas.</p>
+              </div>
+              <div class="dir-card">
+                <code>dbt/</code>
+                <p>Projeto dbt Core com modelos Raw, staging, Silver, intermediate e marts.</p>
+              </div>
+              <div class="dir-card">
+                <code>k8s/</code>
+                <p>Manifests Kubernetes, Helm values, RBAC e recursos locais da plataforma.</p>
+              </div>
+              <div class="dir-card">
+                <code>docker/</code>
+                <p>Dockerfiles das imagens locais usadas por Airflow e workloads dbt.</p>
+              </div>
+              <div class="dir-card">
+                <code>ingestion/</code>
+                <p>Espaco para adapters de fonte e utilitarios de ingestao plugaveis.</p>
+              </div>
+              <div class="dir-card">
+                <code>metadata/</code>
+                <p>Artefatos previstos para catalogo, qualidade, freshness e execucoes.</p>
+              </div>
+              <div class="dir-card">
+                <code>docs/</code>
+                <p>Documentacao, runbooks, licoes, troubleshooting e esta pagina estatica.</p>
+              </div>
+              <div class="dir-card">
+                <code>scripts/</code>
+                <p>Automacoes locais, validadores e explicacoes didaticas dos atalhos.</p>
+              </div>
+              <div class="dir-card">
+                <code>.github/</code>
+                <p>Workflows de convencoes, qualidade e automacoes do GitHub Actions.</p>
+              </div>
+            </div>
+            <p style="margin-top: 14px">
+              <a href="pages/doc.html?doc=overview">Abrir pagina de visao geral</a>
+            </p>
           </section>
 
           <section id="caminho-rapido">
@@ -659,7 +732,7 @@ make trigger-airflow-dbt</code></pre>
                 <div>
                   <b>Kubernetes local com kind</b>
                   <p>Cria o cluster local e o namespace <code>data-platform</code>.</p>
-                  <a href="../lessons/01-local-kubernetes-kind.md">Abrir markdown</a>
+                  <a href="pages/doc.html?doc=lesson-kind">Abrir pagina</a>
                 </div>
               </div>
               <div class="path-row">
@@ -667,7 +740,7 @@ make trigger-airflow-dbt</code></pre>
                 <div>
                   <b>Storage Raw com MinIO</b>
                   <p>Sobe MinIO, cria o bucket <code>lakehouse</code> e recebe Raw Parquet.</p>
-                  <a href="../lessons/02-minio-raw-storage.md">Abrir markdown</a>
+                  <a href="pages/doc.html?doc=lesson-minio">Abrir pagina</a>
                 </div>
               </div>
               <div class="path-row">
@@ -675,7 +748,7 @@ make trigger-airflow-dbt</code></pre>
                 <div>
                   <b>Catalogo Iceberg com Polaris</b>
                   <p>Inicializa o catalogo <code>lakehouse</code> apontando para MinIO.</p>
-                  <a href="../lessons/03-polaris-iceberg-catalog.md">Abrir markdown</a>
+                  <a href="pages/doc.html?doc=lesson-polaris">Abrir pagina</a>
                 </div>
               </div>
               <div class="path-row">
@@ -683,7 +756,7 @@ make trigger-airflow-dbt</code></pre>
                 <div>
                   <b>Transformacoes com dbt e DuckDB</b>
                   <p>Compila, executa e testa modelos Raw, staging, Silver e Gold.</p>
-                  <a href="../lessons/04-dbt-duckdb-transformations.md">Abrir markdown</a>
+                  <a href="pages/doc.html?doc=lesson-dbt">Abrir pagina</a>
                 </div>
               </div>
               <div class="path-row">
@@ -691,7 +764,7 @@ make trigger-airflow-dbt</code></pre>
                 <div>
                   <b>Airflow e pods Kubernetes</b>
                   <p>Explora KubernetesPodOperator, params e retries sem alterar a DAG principal.</p>
-                  <a href="../lessons/05-airflow-kubernetes-pods.md">Abrir markdown</a>
+                  <a href="pages/doc.html?doc=lesson-airflow">Abrir pagina</a>
                 </div>
               </div>
               <div class="path-row">
@@ -699,7 +772,7 @@ make trigger-airflow-dbt</code></pre>
                 <div>
                   <b>Pipeline ponta a ponta</b>
                   <p>Valida MinIO, Polaris, dbt, DuckDB e Airflow juntos.</p>
-                  <a href="../lessons/06-end-to-end-pipeline.md">Abrir markdown</a>
+                  <a href="pages/doc.html?doc=lesson-e2e">Abrir pagina</a>
                 </div>
               </div>
             </div>
@@ -793,7 +866,7 @@ ingestion_date
 loaded_at
 record_hash
 raw_payload</code></pre>
-            <p><a href="../user-customization-guide.md">Abrir guia de customizacao em markdown</a></p>
+            <p><a href="pages/doc.html?doc=customization">Abrir pagina de customizacao</a></p>
           </section>
 
           <section id="airflow">
@@ -828,17 +901,17 @@ kubectl -n data-platform exec deployment/airflow-scheduler -- \
 
           <section id="runbooks">
             <h2>Runbooks</h2>
-            <p>Os runbooks continuam disponiveis em markdown para consulta detalhada.</p>
+            <p>Os runbooks tambem estao disponiveis como paginas HTML internas.</p>
             <ul class="file-list">
-              <li><a href="../runbooks/local-kind-cluster.md">Cluster kind local</a></li>
-              <li><a href="../runbooks/minio-object-storage.md">Armazenamento MinIO</a></li>
-              <li><a href="../runbooks/polaris-rest-catalog.md">Catalogo Polaris</a></li>
-              <li><a href="../runbooks/airflow-kubernetes-pod-operator.md">Airflow com KubernetesPodOperator</a></li>
-              <li><a href="../runbooks/dbt-duckdb-polaris.md">Fundacao dbt + DuckDB + Polaris</a></li>
-              <li><a href="../runbooks/dbt-raw-staging.md">Fontes Raw e staging</a></li>
-              <li><a href="../runbooks/silver-layer.md">Camada Silver</a></li>
-              <li><a href="../runbooks/dbt-minio-polaris-backbone.md">Coluna dorsal dbt MinIO Polaris</a></li>
-              <li><a href="../runbooks/airflow-dbt-orchestration.md">Orquestracao dbt com Airflow</a></li>
+              <li><a href="pages/doc.html?doc=runbook-kind">Cluster kind local</a></li>
+              <li><a href="pages/doc.html?doc=runbook-minio">Armazenamento MinIO</a></li>
+              <li><a href="pages/doc.html?doc=runbook-polaris">Catalogo Polaris</a></li>
+              <li><a href="pages/doc.html?doc=runbook-airflow-kpo">Airflow com KubernetesPodOperator</a></li>
+              <li><a href="pages/doc.html?doc=runbook-dbt-foundation">Fundacao dbt + DuckDB + Polaris</a></li>
+              <li><a href="pages/doc.html?doc=runbook-raw-staging">Fontes Raw e staging</a></li>
+              <li><a href="pages/doc.html?doc=runbook-silver">Camada Silver</a></li>
+              <li><a href="pages/doc.html?doc=runbook-backbone">Coluna dorsal dbt MinIO Polaris</a></li>
+              <li><a href="pages/doc.html?doc=runbook-airflow-dbt">Orquestracao dbt com Airflow</a></li>
             </ul>
           </section>
 
@@ -875,7 +948,7 @@ kubectl -n data-platform describe job dbt-publish-raw-fixture</code></pre>
               </div>
             </details>
             <p style="margin-top: 14px">
-              <a href="../troubleshooting/guided-troubleshooting.md">Abrir troubleshooting completo em markdown</a>
+              <a href="pages/doc.html?doc=troubleshooting">Abrir pagina de troubleshooting completo</a>
             </p>
           </section>
 
@@ -894,17 +967,17 @@ make pre-push</code></pre>
           <section id="arquivos">
             <h2>Arquivos da documentacao</h2>
             <ul class="file-list">
-              <li><a href="../../README.md">README.md</a></li>
-              <li><a href="../project-plan.md">docs/project-plan.md</a></li>
-              <li><a href="../learning-path.md">docs/learning-path.md</a></li>
-              <li><a href="../user-customization-guide.md">docs/user-customization-guide.md</a></li>
-              <li><a href="../troubleshooting/guided-troubleshooting.md">docs/troubleshooting/guided-troubleshooting.md</a></li>
-              <li><a href="../lessons/01-local-kubernetes-kind.md">docs/lessons/01-local-kubernetes-kind.md</a></li>
-              <li><a href="../lessons/02-minio-raw-storage.md">docs/lessons/02-minio-raw-storage.md</a></li>
-              <li><a href="../lessons/03-polaris-iceberg-catalog.md">docs/lessons/03-polaris-iceberg-catalog.md</a></li>
-              <li><a href="../lessons/04-dbt-duckdb-transformations.md">docs/lessons/04-dbt-duckdb-transformations.md</a></li>
-              <li><a href="../lessons/05-airflow-kubernetes-pods.md">docs/lessons/05-airflow-kubernetes-pods.md</a></li>
-              <li><a href="../lessons/06-end-to-end-pipeline.md">docs/lessons/06-end-to-end-pipeline.md</a></li>
+              <li><a href="pages/doc.html?doc=overview">Visao geral</a></li>
+              <li><a href="pages/doc.html?doc=project-plan">Plano do projeto</a></li>
+              <li><a href="pages/doc.html?doc=learning-path">Trilha de aprendizado</a></li>
+              <li><a href="pages/doc.html?doc=customization">Guia de customizacao</a></li>
+              <li><a href="pages/doc.html?doc=troubleshooting">Troubleshooting guiado</a></li>
+              <li><a href="pages/doc.html?doc=lesson-kind">Licao 01 - Kubernetes local</a></li>
+              <li><a href="pages/doc.html?doc=lesson-minio">Licao 02 - MinIO Raw</a></li>
+              <li><a href="pages/doc.html?doc=lesson-polaris">Licao 03 - Polaris</a></li>
+              <li><a href="pages/doc.html?doc=lesson-dbt">Licao 04 - dbt e DuckDB</a></li>
+              <li><a href="pages/doc.html?doc=lesson-airflow">Licao 05 - Airflow</a></li>
+              <li><a href="pages/doc.html?doc=lesson-e2e">Licao 06 - Pipeline ponta a ponta</a></li>
             </ul>
           </section>
 
@@ -916,23 +989,6 @@ make pre-push</code></pre>
       </main>
     </div>
 
-    <script>
-      const buttons = document.querySelectorAll(".copy");
-
-      buttons.forEach((button) => {
-        button.addEventListener("click", async () => {
-          const code = button.nextElementSibling?.innerText ?? "";
-          try {
-            await navigator.clipboard.writeText(code);
-            button.textContent = "copiado";
-            window.setTimeout(() => {
-              button.textContent = "copiar";
-            }, 1400);
-          } catch {
-            button.textContent = "selecione";
-          }
-        });
-      });
-    </script>
+    <script src="assets/site.js"></script>
   </body>
 </html>
