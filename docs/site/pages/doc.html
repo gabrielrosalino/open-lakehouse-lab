@@ -6,30 +6,65 @@
     <title>Open Lakehouse Lab - Documento</title>
     <link rel="stylesheet" href="../assets/site.css" />
   </head>
-  <body>
-    <main class="page-shell">
-      <div class="doc-top">
-        <a class="crumb" href="../index.html">Voltar para a pagina inicial</a>
-        <article class="doc-hero">
-          <span class="doc-category" id="doc-category">Documento</span>
-          <h1 id="doc-title">Carregando...</h1>
-          <p class="lead" id="doc-summary"></p>
-          <div class="tags" id="doc-tags"></div>
-        </article>
-      </div>
-
-      <div class="doc-grid">
-        <div class="doc-main" id="doc-sections"></div>
-        <aside class="doc-aside">
-          <div class="side-panel">
-            <h2>Nesta pagina</h2>
-            <div id="doc-toc"></div>
-            <h2 style="margin-top: 18px">Comandos</h2>
-            <div id="doc-commands"></div>
+  <body class="doc-page">
+    <div class="layout doc-layout">
+      <aside class="sidebar" aria-label="Navegacao principal">
+        <div class="brand">
+          <strong>Open Lakehouse Lab</strong>
+          <span>Documentacao estatica em portugues para estudo local de lakehouse.</span>
+        </div>
+        <nav>
+          <div class="nav-group">
+            <h2>Comeco</h2>
+            <a href="../index.html#visao-geral">Visao geral</a>
+            <a href="../index.html#arquitetura">Arquitetura</a>
+            <a href="../index.html#estrutura">Estrutura do projeto</a>
+            <a href="../index.html#caminho-rapido">Caminho rapido</a>
           </div>
-        </aside>
-      </div>
-    </main>
+          <div class="nav-group">
+            <h2>Licoes</h2>
+            <a href="doc.html?doc=lesson-kind">Kubernetes local</a>
+            <a href="doc.html?doc=lesson-minio">MinIO Raw</a>
+            <a href="doc.html?doc=lesson-polaris">Polaris</a>
+            <a href="doc.html?doc=lesson-dbt">dbt e DuckDB</a>
+            <a href="doc.html?doc=lesson-airflow">Airflow</a>
+            <a href="doc.html?doc=lesson-e2e">Ponta a ponta</a>
+          </div>
+          <div class="nav-group">
+            <h2>Guias</h2>
+            <a href="doc.html?doc=learning-path">Trilha completa</a>
+            <a href="doc.html?doc=customization">Customizacao</a>
+            <a href="doc.html?doc=troubleshooting">Troubleshooting</a>
+          </div>
+        </nav>
+      </aside>
+
+      <main>
+        <div class="content">
+          <div class="doc-top">
+            <a class="crumb" href="../index.html">Voltar para a pagina inicial</a>
+            <article class="doc-hero">
+              <span class="doc-category" id="doc-category">Documento</span>
+              <h1 id="doc-title">Carregando...</h1>
+              <p class="lead" id="doc-summary"></p>
+              <div class="tags" id="doc-tags"></div>
+            </article>
+          </div>
+
+          <div class="doc-grid">
+            <div class="doc-main" id="doc-sections"></div>
+            <aside class="doc-aside">
+              <div class="side-panel">
+                <h2>Nesta pagina</h2>
+                <div class="toc-list" id="doc-toc"></div>
+                <h2 class="side-heading">Comandos</h2>
+                <div class="command-list" id="doc-commands"></div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
 
     <script src="../assets/docs-data.js"></script>
     <script>
@@ -60,7 +95,8 @@
       sections.innerHTML = (doc.sections || [])
         .map((section, index) => {
           const id = `sec-${index + 1}`;
-          return `<section class="doc-section" id="${id}"><h2>${escapeHtml(section.title)}</h2><p>${escapeHtml(section.body)}</p></section>`;
+          const step = String(index + 1).padStart(2, "0");
+          return `<section class="doc-section" id="${id}"><span class="doc-step">${step}</span><div class="doc-section-copy"><h2>${escapeHtml(section.title)}</h2><p>${escapeHtml(section.body)}</p></div></section>`;
         })
         .join("");
       toc.innerHTML = (doc.sections || [])
@@ -70,8 +106,8 @@
       const commands = document.getElementById("doc-commands");
       commands.innerHTML = (doc.commands || [])
         .map(
-          (command) =>
-            `<pre><button class="copy" type="button">copiar</button><code>${escapeHtml(command)}</code></pre>`,
+          (command, index) =>
+            `<div class="command-card"><span>Comando ${String(index + 1).padStart(2, "0")}</span><pre><button class="copy" type="button">copiar</button><code>${escapeHtml(command)}</code></pre></div>`,
         )
         .join("");
     </script>
