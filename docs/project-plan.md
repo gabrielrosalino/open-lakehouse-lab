@@ -351,6 +351,28 @@ port-forward-grafana
 
 ## Documentacao obrigatoria
 
+### Learning Path
+
+```text
+learning-path.md
+user-customization-guide.md
+lessons/01-local-kubernetes-kind.md
+lessons/02-minio-raw-storage.md
+lessons/03-polaris-iceberg-catalog.md
+lessons/04-dbt-duckdb-transformations.md
+lessons/05-airflow-kubernetes-pods.md
+lessons/06-end-to-end-pipeline.md
+troubleshooting/guided-troubleshooting.md
+```
+
+O projeto deve manter dois modos de uso:
+
+- Fast Path: atalhos `make` executam o caminho padrao rapidamente.
+- Learning Path: as mesmas etapas sao explicadas como licoes reproduziveis.
+
+Atalhos importantes devem imprimir objetivo, motivo, comandos executados,
+inspecoes recomendadas e proximo passo.
+
 ### ADRs
 
 ```text
@@ -439,7 +461,16 @@ investigate-airflow-metric-failure.md
 - Validar logs, remocao dos pods e acionamento pela Airflow UI.
 - Manter a orquestracao desacoplada dos adapters concretos de ingestao.
 
-### Fase 8 - Observabilidade e catalogacao
+### Fase 8 - Plataforma de estudo guiado
+
+- Criar Fast Path para executar o exemplo padrao.
+- Criar Learning Path com licoes incrementais.
+- Tornar atalhos `make` explicativos.
+- Documentar comandos manuais equivalentes.
+- Documentar como customizar dados Raw, modelos dbt e DAGs Airflow.
+- Criar DAGs didaticas para explorar Airflow sem alterar a DAG principal.
+
+### Fase 9 - Observabilidade e catalogacao
 
 - Coletar metadados de execucao.
 - Coletar snapshots Iceberg.
@@ -448,7 +479,7 @@ investigate-airflow-metric-failure.md
 - Registrar resultados de qualidade.
 - Documentar exemplos de consultas tecnicas.
 
-### Fase 9 - Prometheus e Grafana
+### Fase 10 - Prometheus e Grafana
 
 - Instalar kube-prometheus-stack.
 - Configurar Prometheus.
@@ -459,7 +490,7 @@ investigate-airflow-metric-failure.md
 - Criar paineis operacionais para Kubernetes, Airflow, MinIO, Polaris e pipelines.
 - Criar regras de alerta para falhas criticas.
 
-### Fase 9 - Documentacao
+### Fase 11 - Documentacao
 
 - Completar README.
 - Criar ADRs.

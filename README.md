@@ -2,6 +2,49 @@
 
 Open Lakehouse Lab is a 100% open source study project for modern data lakehouse engineering.
 
+## Fast Path
+
+Use o Fast Path para subir o caminho padrao do laboratorio em um ambiente local.
+O comando imprime o objetivo, o motivo, os comandos executados e as inspecoes
+recomendadas para cada etapa.
+
+```bash
+make lab-fast-path
+```
+
+Esse caminho cria o cluster kind, sobe MinIO, Polaris e Airflow, publica uma
+fixture Raw em Parquet, dispara a DAG principal e valida a coluna dorsal:
+
+```text
+MinIO Raw Parquet -> dbt + DuckDB -> Polaris/Iceberg -> Airflow Kubernetes pods
+```
+
+## Learning Path
+
+Use o Learning Path para estudar cada camada passo a passo antes de customizar o
+pipeline.
+
+```bash
+make lab-learning-path
+```
+
+Documentacao principal:
+
+- `docs/learning-path.md`: trilha guiada, Fast Path, Learning Path e interfaces;
+- `docs/user-customization-guide.md`: como criar pipelines proprios;
+- `docs/troubleshooting/guided-troubleshooting.md`: erros comuns e recuperacao;
+- `docs/lessons/`: licoes incrementais do cluster ao pipeline ponta a ponta.
+
+Os atalhos tambem podem ser explicados sem alterar o ambiente:
+
+```bash
+make explain-cluster
+make explain-deploy-minio
+make explain-deploy-polaris
+make explain-deploy-airflow
+make explain-dbt-orchestration
+```
+
 ## Project structure
 
 The Stage 01 layout separates the local lakehouse into explicit implementation areas:
@@ -21,6 +64,8 @@ metadata/             Pipeline, quality, catalog, Iceberg and freshness artifact
 docs/adr/             Architecture decision records.
 docs/runbooks/        Operational runbooks.
 docs/architecture/    Architecture documentation.
+docs/lessons/         Guided learning lessons.
+docs/troubleshooting/ Guided troubleshooting docs.
 ```
 
 The Airflow scaffold is managed with Astro CLI. The Airflow runtime requirements include Astronomer Cosmos with the dbt DuckDB extra so later stages can orchestrate dbt models from Airflow without hand-wiring each model as a custom task.
@@ -71,6 +116,10 @@ ephemeral Kubernetes pods using the local `dbt + duckdb` image and keeps the
 DuckDB target state in a small local PVC. See
 `docs/runbooks/airflow-dbt-orchestration.md` for the full local test flow.
 
+Stage 14 adds didactic DAGs named `airflow/dags/lab_*.py` so users can explore
+Airflow features such as `KubernetesPodOperator`, params and retries without
+changing the stable example DAG.
+
 ## dbt + DuckDB foundation
 
 Stage 08 configures dbt with DuckDB and prepares integration points for Apache
@@ -84,6 +133,41 @@ Stage 10 builds generic Silver dbt models from the canonical staging contract.
 The Silver layer currently provides deduplicated source events, metric
 observations and dataset freshness metrics without depending on public API
 adapters. See `docs/runbooks/silver-layer.md` for execution and validation.
+
+Stage 13 connects the dbt/DuckDB backbone to MinIO and Polaris so the example
+path can read Raw Parquet and publish Iceberg tables locally. Stage 14 explains
+that path through guided docs and explainable shortcuts.
+
+## Local interfaces
+
+MinIO:
+
+```bash
+make port-forward-minio
+```
+
+Open `http://localhost:9001` with `minioadmin / minioadmin123`.
+
+Airflow:
+
+```bash
+make port-forward-airflow
+```
+
+Open `http://localhost:8080` with `admin / admin`.
+
+Polaris health API:
+
+```bash
+make port-forward-polaris
+curl -fsS http://localhost:8182/q/health/ready
+```
+
+dbt is used through the CLI and Airflow logs. DuckDB can be opened with:
+
+```bash
+duckdb dbt/target/open_lakehouse_lab.duckdb
+```
 
 ## Development quality checks
 
